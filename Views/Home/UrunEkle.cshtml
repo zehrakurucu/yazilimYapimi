@@ -1,0 +1,43 @@
+﻿@model yazilimYapimi.Models.urunler
+
+@{
+    ViewBag.Title = "UrunEkle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+
+    <form class="needs-validation" novalidate>
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+                <label for="country">Ürün tipi</label>
+                <select class="custom-select d-block w-100" id="country" required>
+                    <option value="">Choose...</option>
+                    <option>buğday</option>
+                    <option>arpa</option>
+                    <option>yulaf</option>
+                    <option>petrol</option>
+                    <option>pamuk</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a valid country.
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="lastName">miktar</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                <div class="invalid-feedback">
+                    Valid last name is required.
+                </div>
+            </div>
+        </div>
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Ürün ekle</button>
+    </form>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
