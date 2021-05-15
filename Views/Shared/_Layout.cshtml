@@ -37,53 +37,64 @@
 
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
-                <div class="col-4 pt-1">
-                    <li class="nav-item dropdown" style="list-style-type: none;">
-                        <a class="nav-link dropdown-toggle mr-lg-2" id="contactsDropdown" href="#" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <span class="d-lg-none">
-                                Onaylamalar
-                                <span class="badge badge-pill badge-warning">6 new</span>
-                            </span>
-                            <span class="indicator text-warning d-none d-lg-block">
-                                <i class="fa fa-fw fa-circle"></i>
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" style="min-width: 300px;" aria-labelledby="contactsDropdown">
-                            <h6 class="dropdown-header">Contacts:</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
-                                <img src="https://orig00.deviantart.net/d7b0/f/2011/166/d/4/avatar_100x100_by_demonfox_zephz-d3iyw6a.png"
-                                     class="rounded-circle" style="width: 50px; height: 50px;">
-                                <div class="text-left user-item" style="display: inline-block; margin-left: 10px; width: 100px;">
-                                    FirstName LastName
-                                </div>
-                                <span class="text-right">
-                                    <input type="button" class="btn btn-primary btn-sm" value="Accept">
-                                    <input type="button" class="btn btn-default btn-sm" value="Reject">
+                @if (Convert.ToInt32(Session["yetki"]) == 2)
+                {
+                    <div class="col-4 pt-1">
+                        <li class="nav-item dropdown" style="list-style-type: none;">
+                            <a class="nav-link dropdown-toggle mr-lg-2" id="contactsDropdown" href="#" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-bell"></i>
+                                <span class="d-lg-none">
+                                    Onaylamalar
+                                    <span class="badge badge-pill badge-warning">6 new</span>
+                                </span>
+                                <span class="indicator text-warning d-none d-lg-block">
+                                    <i class="fa fa-fw fa-circle"></i>
                                 </span>
                             </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
-                                <img src="https://orig00.deviantart.net/d7b0/f/2011/166/d/4/avatar_100x100_by_demonfox_zephz-d3iyw6a.png"
-                                     class="rounded-circle" style="width: 50px; height: 50px;">
-                                <div class="text-left user-item" style="display: inline-block; margin-left: 10px; width: 100px;">
-                                    FirstName LastName
-                                </div>
-                                <div style="display: inline-block;">
-                                    <input type="button" class="btn btn-primary btn-sm" value="Accept">
-                                    <input type="button" class="btn btn-default btn-sm" value="Reject">
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                </div>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width: 300px;" aria-labelledby="contactsDropdown">
+                                <h6 class="dropdown-header">Contacts:</h6>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">
+                                    <img src="https://orig00.deviantart.net/d7b0/f/2011/166/d/4/avatar_100x100_by_demonfox_zephz-d3iyw6a.png"
+                                         class="rounded-circle" style="width: 50px; height: 50px;">
+                                    <div class="text-left user-item" style="display: inline-block; margin-left: 10px; width: 100px;">
+                                        FirstName LastName
+                                    </div>
+                                    <span class="text-right">
+                                        <input type="button" class="btn btn-primary btn-sm" value="Accept">
+                                        <input type="button" class="btn btn-default btn-sm" value="Reject">
+                                    </span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">
+                                    <img src="https://orig00.deviantart.net/d7b0/f/2011/166/d/4/avatar_100x100_by_demonfox_zephz-d3iyw6a.png"
+                                         class="rounded-circle" style="width: 50px; height: 50px;">
+                                    <div class="text-left user-item" style="display: inline-block; margin-left: 10px; width: 100px;">
+                                        FirstName LastName
+                                    </div>
+                                    <div style="display: inline-block;">
+                                        <input type="button" class="btn btn-primary btn-sm" value="Accept">
+                                        <input type="button" class="btn btn-default btn-sm" value="Reject">
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </div>
+                }
                 <div class="col-4 text-center">
                     <a class="blog-header-logo text-dark" href="#">YAZILIM YAPIMI</a>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
-                    <a class="btn btn-sm btn-outline-secondary" href="/Home/Index">Giriş Yap</a>
+                    @if (Session["yetki"] == null)
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" href="/Home/Index">Giriş Yap</a>
+                    }
+
+                    @if (Session["yetki"] != null)
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" href="/Home/Cikis">çıkış yap</a>
+                    }
                 </div>
             </div>
         </header>
@@ -91,7 +102,10 @@
         <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
                 <a class="p-2 text-muted" href="/Home/Urunler">Ürünler</a>
-                <a class="p-2 text-muted" href="/Home/UrunEkle">Ürün ekle</a>
+                @if (Convert.ToInt32(Session["yetki"])==1)
+                {
+                    <a class="p-2 text-muted" href="/Home/UrunEkle">Ürün ekle</a>
+                }
                 <a class="p-2 text-muted" href="/Home/BakiyeEkle">bakiye ekle</a>
             </nav>
         </div>

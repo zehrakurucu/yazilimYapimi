@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using yazilimYapimi.Models;
 
+
 namespace yazilimYapimi.Controllers
 {
     
@@ -40,6 +41,37 @@ namespace yazilimYapimi.Controllers
             return RedirectToAction("Index");
 
         }
+
+        [HttpPost]
+        public ActionResult Login(string kad,string sifre)
+        {
+            if (kad=="admin"&&sifre=="123")
+            {
+                Session["yetki"] = 2;
+                return RedirectToAction("Urunler");
+            }
+
+            var kullanici = db.kullanici.FirstOrDefault(x => x.kad == kad && x.sifre == sifre);
+            if (kullanici!=null)
+            {
+                Session["yetki"] = kullanici.yetki;
+                Session["k_id"] = kullanici.k_id;
+                return RedirectToAction("Urunler");
+            }
+            else
+            {
+                ViewBag.hata = "hatalı giriş";
+                return RedirectToAction("Index");
+            }
+
+            
+        }
+        public ActionResult Cikis()
+        {
+            Session.Clear();
+            return RedirectToAction("Index");
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
