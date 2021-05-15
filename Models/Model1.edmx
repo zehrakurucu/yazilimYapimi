@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="yazilimyapimiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="kullanici">
+          <Key>
+            <PropertyRef Name="k_id" />
+          </Key>
+          <Property Name="k_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tc" Type="nchar" MaxLength="12" Nullable="false" />
+          <Property Name="ad" Type="nvarchar" MaxLength="50" />
+          <Property Name="soyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="kad" Type="nvarchar" MaxLength="50" />
+          <Property Name="sifre" Type="nvarchar" MaxLength="50" />
+          <Property Name="tel" Type="nchar" MaxLength="11" />
+          <Property Name="mail" Type="nvarchar" MaxLength="50" />
+          <Property Name="adres" Type="nvarchar" MaxLength="50" />
+          <Property Name="yetki" Type="bit" Nullable="false" />
+          <Property Name="bakiye" Type="int" />
+        </EntityType>
+        <EntityType Name="obakiye">
+          <Key>
+            <PropertyRef Name="k_id" />
+          </Key>
+          <Property Name="k_id" Type="int" Nullable="false" />
+          <Property Name="bakiye" Type="int" />
+        </EntityType>
+        <EntityType Name="ourunler">
+          <Key>
+            <PropertyRef Name="urun_id" />
+          </Key>
+          <Property Name="urun_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="k_id" Type="int" />
+          <Property Name="miktar" Type="int" />
+          <Property Name="fiyat" Type="int" />
+          <Property Name="urun" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="urunler">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="k_id" Type="int" />
+          <Property Name="miktar" Type="int" />
+          <Property Name="fiyat" Type="int" />
+          <Property Name="urun" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_urunler_kullanici">
+          <End Role="kullanici" Type="Self.kullanici" Multiplicity="0..1" />
+          <End Role="urunler" Type="Self.urunler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanici">
+              <PropertyRef Name="k_id" />
+            </Principal>
+            <Dependent Role="urunler">
+              <PropertyRef Name="k_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="yazilimyapimiModelStoreContainer">
+          <EntitySet Name="kullanici" EntityType="Self.kullanici" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="obakiye" EntityType="Self.obakiye" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ourunler" EntityType="Self.ourunler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="urunler" EntityType="Self.urunler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_urunler_kullanici" Association="Self.FK_urunler_kullanici">
+            <End Role="kullanici" EntitySet="kullanici" />
+            <End Role="urunler" EntitySet="urunler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="yazilimyapimiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="kullanici">
+          <Key>
+            <PropertyRef Name="k_id" />
+          </Key>
+          <Property Name="k_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tc" Type="String" MaxLength="12" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="kad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="tel" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="adres" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="yetki" Type="Boolean" Nullable="false" />
+          <Property Name="bakiye" Type="Int32" />
+          <NavigationProperty Name="urunler" Relationship="Self.FK_urunler_kullanici" FromRole="kullanici" ToRole="urunler" />
+        </EntityType>
+        <EntityType Name="obakiye">
+          <Key>
+            <PropertyRef Name="k_id" />
+          </Key>
+          <Property Name="k_id" Type="Int32" Nullable="false" />
+          <Property Name="bakiye" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ourunler">
+          <Key>
+            <PropertyRef Name="urun_id" />
+          </Key>
+          <Property Name="urun_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="k_id" Type="Int32" />
+          <Property Name="miktar" Type="Int32" />
+          <Property Name="fiyat" Type="Int32" />
+          <Property Name="urun" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="urunler">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="k_id" Type="Int32" />
+          <Property Name="miktar" Type="Int32" />
+          <Property Name="fiyat" Type="Int32" />
+          <Property Name="urun" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="kullanici" Relationship="Self.FK_urunler_kullanici" FromRole="urunler" ToRole="kullanici" />
+        </EntityType>
+        <Association Name="FK_urunler_kullanici">
+          <End Role="kullanici" Type="Self.kullanici" Multiplicity="0..1" />
+          <End Role="urunler" Type="Self.urunler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanici">
+              <PropertyRef Name="k_id" />
+            </Principal>
+            <Dependent Role="urunler">
+              <PropertyRef Name="k_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="yazilimyapimiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="kullanici" EntityType="Self.kullanici" />
+          <EntitySet Name="obakiye" EntityType="Self.obakiye" />
+          <EntitySet Name="ourunler" EntityType="Self.ourunler" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="urunler" EntityType="Self.urunler" />
+          <AssociationSet Name="FK_urunler_kullanici" Association="Self.FK_urunler_kullanici">
+            <End Role="kullanici" EntitySet="kullanici" />
+            <End Role="urunler" EntitySet="urunler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="yazilimyapimiModelStoreContainer" CdmEntityContainer="yazilimyapimiEntities">
+          <EntitySetMapping Name="kullanici">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.kullanici">
+              <MappingFragment StoreEntitySet="kullanici">
+                <ScalarProperty Name="k_id" ColumnName="k_id" />
+                <ScalarProperty Name="tc" ColumnName="tc" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="kad" ColumnName="kad" />
+                <ScalarProperty Name="sifre" ColumnName="sifre" />
+                <ScalarProperty Name="tel" ColumnName="tel" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="adres" ColumnName="adres" />
+                <ScalarProperty Name="yetki" ColumnName="yetki" />
+                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="obakiye">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.obakiye">
+              <MappingFragment StoreEntitySet="obakiye">
+                <ScalarProperty Name="k_id" ColumnName="k_id" />
+                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ourunler">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.ourunler">
+              <MappingFragment StoreEntitySet="ourunler">
+                <ScalarProperty Name="urun_id" ColumnName="urun_id" />
+                <ScalarProperty Name="k_id" ColumnName="k_id" />
+                <ScalarProperty Name="miktar" ColumnName="miktar" />
+                <ScalarProperty Name="fiyat" ColumnName="fiyat" />
+                <ScalarProperty Name="urun" ColumnName="urun" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="urunler">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.urunler">
+              <MappingFragment StoreEntitySet="urunler">
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+                <ScalarProperty Name="k_id" ColumnName="k_id" />
+                <ScalarProperty Name="miktar" ColumnName="miktar" />
+                <ScalarProperty Name="fiyat" ColumnName="fiyat" />
+                <ScalarProperty Name="urun" ColumnName="urun" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
