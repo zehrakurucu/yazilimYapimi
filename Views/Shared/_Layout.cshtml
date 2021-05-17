@@ -100,6 +100,9 @@
 
                     @if (Session["yetki"] != null)
                     {
+                        if (Convert.ToInt32(Session["yetki"]) != 2)
+                        {
+                            <a class="btn btn-sm btn-outline-secondary" href="/Home/BakiyeEkle">bakiye:@Session["para"].ToString()</a>}
                         <a class="btn btn-sm btn-outline-secondary" href="/Home/Cikis">çıkış yap</a>
                     }
                 </div>
