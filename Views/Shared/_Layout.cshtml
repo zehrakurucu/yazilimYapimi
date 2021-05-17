@@ -85,6 +85,21 @@
                                     </a>
 
                                 }
+                                @foreach (var item in ViewBag.urun)
+                                {
+
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="text-left user-item" style="display: inline-block; margin-left: 10px; width: 100px;">
+                                            @item.kullanici , @item.miktar adet @item.urun satmak istiyor. @item.fiyat karşılığında
+                                        </div>
+                                        <div style="display: inline-block;">
+                                            <a class="btn btn-primary btn-sm justify-content-end" href="/Home/UrunOnay?urun_id=@item.urun_id&miktar=@item.miktar&k_id=@item.k_id&urun=@item.urun&fiyat=@item.fiyat&onay=1">✓</a>
+                                            <a class="btn btn-primary btn-sm justify-content-end" href="/Home/UrunOnay?urun_id=@item.urun_id&onay=0">X</a>
+                                        </div>
+                                    </a>
+                                }
                             </div>
                         </li>
                     </div>
