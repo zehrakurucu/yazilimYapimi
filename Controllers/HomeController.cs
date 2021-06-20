@@ -238,7 +238,7 @@ namespace yazilimYapimi.Controllers
             int u_id = Convert.ToInt32(urun_id);
             if (onay == "1")
             {
-                urunler urunler = new urunler()
+                urunler urun1 = new urunler()
                 {
                     u_id = u_id,
                     k_id = Convert.ToInt32(k_id),
@@ -246,11 +246,13 @@ namespace yazilimYapimi.Controllers
                     fiyat = Convert.ToInt32(fiyat),
                     urun = urun
                 };
-                db.urunler.Add(urunler);
+                db.urunler.Add(urun1);
 
                 var b = db.ourunler.FirstOrDefault(x => x.urun_id == u_id);
                 db.ourunler.Remove(b);
                 db.SaveChanges();
+
+                OtoSatis();
             }
             else
             {
@@ -258,7 +260,44 @@ namespace yazilimYapimi.Controllers
                 db.ourunler.Remove(b);
                 db.SaveChanges();
             }
+            
             return Redirect("Urunler");
+        }
+
+        void OtoSatis() 
+        {
+            List<urunSiparis> siparisler = new List<urunSiparis>();
+            siparisler = db.urunSiparis.ToList();
+
+            List<urunler> urunler = new List<urunler>();
+            urunler = db.urunler.ToList();
+
+            foreach (var siparis in siparisler)
+            {
+                foreach (var urun in urunler)
+                {
+
+                    if (urun.urun==siparis.urun&&urun.miktar>=siparis.adet&&urun.fiyat<=siparis.fiyat)
+                    {
+                        urun.miktar -= siparis.adet;
+
+                        var satici = db.kullanici.FirstOrDefault(x => x.k_id == urun.k_id);
+                        satici.bakiye += urun.fiyat * siparis.adet;
+
+                        var alici=db.kullanici.FirstOrDefault(x => x.k_id == siparis.k_id);
+                        alici.bakiye-= urun.fiyat * siparis.adet;
+
+
+                        if (urun.miktar==0)
+                        {
+                            db.urunler.Remove(urun);
+                        }
+                        db.urunSiparis.Remove(siparis);
+                    }
+
+                }
+            }
+            db.SaveChanges();
         }
 
         //otomatik satın alma------------------------------------------------------------------------------------------------------
@@ -285,11 +324,12 @@ namespace yazilimYapimi.Controllers
 
                     musteri.bakiye -= miktar * alinacakUrun.fiyat;//bakiyeden düşülüyor
                     Session["para"] = musteri.bakiye;
-                    ViewBag.Bildirim = "satin alim basarili " + miktar + " adet " + alinacakUrun.urun + alinacakUrun.fiyat + " fiyatindan satin alindi,toplam odenen: " + (alinacakUrun.fiyat * miktar);
+                    Session["bildirim"]= "satin alim basarili " + miktar + " adet " + alinacakUrun.urun + alinacakUrun.fiyat + " fiyatindan satin alindi,toplam odenen: " + (alinacakUrun.fiyat * miktar);
+                   
                 }
                 else
                 {
-                    ViewBag.Bildirim = "Yetersiz Bakiye";
+                    Session["bildirim"] = "Yetersiz Bakiye";
                 }
             }
             else
@@ -303,7 +343,7 @@ namespace yazilimYapimi.Controllers
                 };
                 db.urunSiparis.Add(urunSiparis);
 
-                ViewBag.Bildirim = "istenilen urun bulunamadı siparis listesine eklendi";
+                Session["bildirim"] = "istenilen urun bulunamadı siparis listesine eklendi";
             }
             db.SaveChanges();
             return Redirect("OtoSatinAl");

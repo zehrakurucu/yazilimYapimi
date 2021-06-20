@@ -5,19 +5,12 @@
 }
 
 
-@if (ViewBag.Bildirim != null)
+@if (Session["bildirim"] != null)
 {
-    <script>
-
-$(document).ready(function(){
-
-alert('@ViewBag.Bildirim');
-
-});
-
-    </script>
-
+    <div class="alert alert-info row" role="alert">@Session["bildirim"]</div>
+    Session["bildirim"]= null;
 }
+
 <div class="row">
     <div class="mb-6">
         <form class="needs-validation" action="/Home/ActionOtoSatinAL" method="post">
