@@ -59,7 +59,8 @@ namespace yazilimYapimi.Controllers
             foreach (var item in urunlers)
             {
                 int kullanici_id = Convert.ToInt32(item.k_id);
-                urun urun = new urun() {
+                urun urun = new urun()
+                {
                     urunadi = item.urun,
                     fiyat = Convert.ToInt32(item.fiyat),
                     k_id = kullanici_id,
@@ -253,7 +254,43 @@ namespace yazilimYapimi.Controllers
 
         //otomatik satın alma------------------------------------------------------------------------------------------------------
 
+        public ActionResult ActionOtoSatinAL(string urun, string adet, string fiyat)
+        {
+            int miktar = Convert.ToInt32(adet);
+            int ucret = Convert.ToInt32(fiyat);
+            int kullaniciId = Convert.ToInt32(Session["k_id"]);
 
+
+            var alinacakUrun = db.urunler.FirstOrDefault(x => x.miktar >= miktar && x.fiyat <= ucret && x.urun == urun);
+
+            var musteri = db.kullanici.FirstOrDefault(x => x.k_id == kullaniciId);
+            if (alinacakUrun != null)// istenilen miktarda istenilen ücretin altında ürün var ise
+            {
+                if (musteri.bakiye >= (miktar * alinacakUrun.fiyat))//müşteride yeterli para var ise
+                {
+                    alinacakUrun.miktar -= miktar;//ürün adeti düşürülüyor
+                    if (alinacakUrun.miktar==0)//ürün bitti ise siliniyor
+                    {
+                        db.urunler.Remove(alinacakUrun);
+                    }
+
+                    musteri.bakiye -= miktar * alinacakUrun.fiyat;//bakiyeden düşülüyor
+                    Session["para"] = musteri.bakiye;
+                    ViewBag.Bildirim = "satin alim basarili "+miktar+" adet "+alinacakUrun.urun+alinacakUrun.fiyat+" fiyatindan satin alindi,toplam odenen: "+(alinacakUrun.fiyat*miktar);
+                }
+                else
+                {
+                    ViewBag.Bildirim = "Yetersiz Bakiye";
+                }
+            }
+            else
+            {
+                ViewBag.Bildirim = "istenilen ürün bulunamadı sipariş listesine eklendi";
+            }
+            db.SaveChanges();
+            return View("OtoSatinAl");
+
+        }
 
 
     }

@@ -17,30 +17,30 @@
                 {
                     <th>Satın al</th>
                 }
-                
+
             </tr>
         </thead>
         <tbody>
 
             @foreach (var item in ViewBag.urunList)
             {
-            <tr>
-                <th>@item.urunadi</th>
-                <th>@item.satici</th>
-                <th>@item.miktar</th>
-                <th>@item.fiyat</th>
-                @if (Session["yetki"] != null)
-                {
-            <th>
-                <a class="btn btn-primary btn-sm justify-content-end" href="#">Satın Al</a>
-            </th>
-                }
-                
-            </tr>
+                <tr>
+                    <th>@item.urunadi</th>
+                    <th>@item.satici</th>
+                    <th>@item.miktar</th>
+                    <th>@item.fiyat</th>
+                    @if (Session["yetki"] != null)
+                    {
+                        <th>
+                            <a class="btn btn-primary btn-sm justify-content-end" href="#">Satın Al</a>
+                        </th>
+                    }
+
+                </tr>
             }
 
 
-</table>
+    </table>
 
 </div>
 
