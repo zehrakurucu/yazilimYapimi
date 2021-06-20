@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "OtoSatinAl";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+
+    <form class="needs-validation" action="/Home/urunEkleme" method="post">
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+                <label for="country">Ürün tipi</label>
+                <select class="custom-select d-block w-100" id="country" name="urun" required>
+                    <option value="">Choose...</option>
+                    <option value="buğday">buğday</option>
+                    <option value="arpa">arpa</option>
+                    <option value="yulaf">yulaf</option>
+                    <option value="pamuk">pamuk</option>
+                </select>
+
+                <div class="invalid-feedback">
+                    geçerli bir şey seçin
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label for="lastName">miktar</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" name="adet" value="" required>
+                <div class="invalid-feedback">
+                    Valid last name is required.
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label for="lastName">Alış Fiyatı</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" name="fiyat" value="" required>
+                <div class="invalid-feedback">
+                    Valid last name is required.
+                </div>
+            </div>
+        </div>
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Satın al</button>
+    </form>
+</div>

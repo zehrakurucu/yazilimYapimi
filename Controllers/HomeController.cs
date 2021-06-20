@@ -22,27 +22,29 @@ namespace yazilimYapimi.Controllers
 
         List<urunsahibi> urunsahibis = new List<urunsahibi>();
 
-        //sayfa action resultları
+        //sayfa action resultları------------------------------------------------------------------------------------------------------
         public ActionResult Index()
         {
             onayListele();
             return View();
-
         }
         public ActionResult UrunEkle()
         {
             onayListele();
             ViewBag.Message = "Ürün ekleme sayfası.";
-
+            return View();
+        }
+        public ActionResult OtoSatinAl()
+        {
+            onayListele();
+            ViewBag.Message = "Otomatik Satın alma sayfası.";
             return View();
         }
 
         public ActionResult BakiyeEkle()
         {
             onayListele();
-
             ViewBag.Message = "Bakiye ekleme.";
-
             return View();
         }
 
@@ -101,7 +103,7 @@ namespace yazilimYapimi.Controllers
         }
 
 
-        //Kayıt işlemi
+        //Kayıt işlemi------------------------------------------------------------------------------------------------------
 
         [HttpPost]
         public ActionResult Register(string ad, string soyad, string kad, string tc, string sifre, string tel, string mail, string adres, bool yetki = true)
@@ -161,7 +163,7 @@ namespace yazilimYapimi.Controllers
         }
 
 
-        //bakiye ekle- bakiye admin onay
+        //bakiye ekle- bakiye admin onay------------------------------------------------------------------------------------------------------
 
         [HttpPost]
         public ActionResult bakiyeEkle(string bakiye)
@@ -204,10 +206,10 @@ namespace yazilimYapimi.Controllers
                 db.SaveChanges();
             }
 
-            return Redirect("/");
+            return Redirect("Urunler");
         }
 
-        //urun ekle -urun onay
+        //urun ekle -urun onay------------------------------------------------------------------------------------------------------
         public ActionResult urunEkleme(string urun, string adet, string fiyat)
         {
             ourunler ourunler = new ourunler()
@@ -219,7 +221,7 @@ namespace yazilimYapimi.Controllers
             };
             db.ourunler.Add(ourunler);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("UrunEkle");
         }
         public ActionResult UrunOnay(string urun_id, string miktar, string k_id, string urun, string fiyat, string onay)
         {
@@ -246,8 +248,12 @@ namespace yazilimYapimi.Controllers
                 db.ourunler.Remove(b);
                 db.SaveChanges();
             }
-            return Redirect("/");
+            return Redirect("Urunler");
         }
+
+        //otomatik satın alma------------------------------------------------------------------------------------------------------
+
+
 
 
     }
