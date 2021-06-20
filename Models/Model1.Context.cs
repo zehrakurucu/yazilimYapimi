@@ -30,5 +30,6 @@ namespace yazilimYapimi.Models
         public virtual DbSet<ourunler> ourunler { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<urunler> urunler { get; set; }
+        public virtual DbSet<urunSiparis> urunSiparis { get; set; }
     }
 }

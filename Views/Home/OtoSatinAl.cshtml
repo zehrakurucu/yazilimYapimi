@@ -62,29 +62,32 @@ alert('@ViewBag.Bildirim');
     </div>
 
     <div class="mb-6">
-        <h4>Spiraişler</h4>
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Ürün</th>
-                    <th>Miktar</th>
-                    <th>Fiyat</th>
-                    <th>Fiyat</th>
+        @if (ViewBag.urunSiparisleri != null)
+        {
+            <h4>Spiraişler</h4>
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Ürün</th>
+                        <th>Miktar</th>
+                        <th>Fiyat</th>
 
-                </tr>
-            </thead>
-            <tbody>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.urunSiparisleri)
+                    {
+                        <tr>
+                            <th>@item.urun</th>
+                            <th>@item.fiyat</th>
+                            <th>@item.adet</th>
+                        </tr>
+                    }
 
-                <tr>
-                    <th>asd</th>
-                    <th>asd</th>
-                    <th>asd</th>
-                    <th>asd</th>
-                </tr>
-        </table>
-
+            </table>
+        }
     </div>
 </div>
 <div class="row">
-    
+
 </div>

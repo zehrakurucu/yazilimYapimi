@@ -38,6 +38,15 @@ namespace yazilimYapimi.Controllers
         {
             onayListele();
             ViewBag.Message = "Otomatik Satın alma sayfası.";
+
+
+
+            List<urunSiparis> urunSiparisleri = new List<urunSiparis>();
+            int k_id =Convert.ToInt32( Session["k_id"]);
+            urunSiparisleri = db.urunSiparis.Where(x => x.k_id == k_id).ToList();
+            ViewBag.urunSiparisleri = urunSiparisleri;
+
+
             return View();
         }
 
@@ -269,14 +278,14 @@ namespace yazilimYapimi.Controllers
                 if (musteri.bakiye >= (miktar * alinacakUrun.fiyat))//müşteride yeterli para var ise
                 {
                     alinacakUrun.miktar -= miktar;//ürün adeti düşürülüyor
-                    if (alinacakUrun.miktar==0)//ürün bitti ise siliniyor
+                    if (alinacakUrun.miktar == 0)//ürün bitti ise siliniyor
                     {
                         db.urunler.Remove(alinacakUrun);
                     }
 
                     musteri.bakiye -= miktar * alinacakUrun.fiyat;//bakiyeden düşülüyor
                     Session["para"] = musteri.bakiye;
-                    ViewBag.Bildirim = "satin alim basarili "+miktar+" adet "+alinacakUrun.urun+alinacakUrun.fiyat+" fiyatindan satin alindi,toplam odenen: "+(alinacakUrun.fiyat*miktar);
+                    ViewBag.Bildirim = "satin alim basarili " + miktar + " adet " + alinacakUrun.urun + alinacakUrun.fiyat + " fiyatindan satin alindi,toplam odenen: " + (alinacakUrun.fiyat * miktar);
                 }
                 else
                 {
@@ -285,11 +294,19 @@ namespace yazilimYapimi.Controllers
             }
             else
             {
-                ViewBag.Bildirim = "istenilen ürün bulunamadı sipariş listesine eklendi";
+                urunSiparis urunSiparis = new urunSiparis
+                {
+                    k_id = kullaniciId,
+                    urun = urun,
+                    fiyat = ucret,
+                    adet = miktar
+                };
+                db.urunSiparis.Add(urunSiparis);
+
+                ViewBag.Bildirim = "istenilen urun bulunamadı siparis listesine eklendi";
             }
             db.SaveChanges();
-            return View("OtoSatinAl");
-
+            return Redirect("OtoSatinAl");
         }
 
 

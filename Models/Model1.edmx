@@ -58,6 +58,16 @@
           <Property Name="fiyat" Type="int" />
           <Property Name="urun" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="urunSiparis">
+          <Key>
+            <PropertyRef Name="siparis_id" />
+          </Key>
+          <Property Name="siparis_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="k_id" Type="int" />
+          <Property Name="urun" Type="nvarchar" MaxLength="50" />
+          <Property Name="fiyat" Type="int" />
+          <Property Name="adet" Type="int" />
+        </EntityType>
         <Association Name="FK_urunler_kullanici">
           <End Role="kullanici" Type="Self.kullanici" Multiplicity="0..1" />
           <End Role="urunler" Type="Self.urunler" Multiplicity="*" />
@@ -76,6 +86,7 @@
           <EntitySet Name="ourunler" EntityType="Self.ourunler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="urunler" EntityType="Self.urunler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="urunSiparis" EntityType="Self.urunSiparis" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_urunler_kullanici" Association="Self.FK_urunler_kullanici">
             <End Role="kullanici" EntitySet="kullanici" />
             <End Role="urunler" EntitySet="urunler" />
@@ -162,7 +173,18 @@
             <End Role="kullanici" EntitySet="kullanici" />
             <End Role="urunler" EntitySet="urunler" />
           </AssociationSet>
+          <EntitySet Name="urunSiparis" EntityType="yazilimyapimiModel.urunSiparis" />
         </EntityContainer>
+        <EntityType Name="urunSiparis">
+          <Key>
+            <PropertyRef Name="siparis_id" />
+          </Key>
+          <Property Name="siparis_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="k_id" Type="Int32" />
+          <Property Name="urun" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fiyat" Type="Int32" />
+          <Property Name="adet" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -224,6 +246,17 @@
                 <ScalarProperty Name="miktar" ColumnName="miktar" />
                 <ScalarProperty Name="fiyat" ColumnName="fiyat" />
                 <ScalarProperty Name="urun" ColumnName="urun" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="urunSiparis">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.urunSiparis">
+              <MappingFragment StoreEntitySet="urunSiparis">
+                <ScalarProperty Name="adet" ColumnName="adet" />
+                <ScalarProperty Name="fiyat" ColumnName="fiyat" />
+                <ScalarProperty Name="urun" ColumnName="urun" />
+                <ScalarProperty Name="k_id" ColumnName="k_id" />
+                <ScalarProperty Name="siparis_id" ColumnName="siparis_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
