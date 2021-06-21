@@ -287,6 +287,7 @@ namespace yazilimYapimi.Controllers
                         var alici=db.kullanici.FirstOrDefault(x => x.k_id == siparis.k_id);
                         alici.bakiye-= urun.fiyat * siparis.adet;
 
+                        LogRaporSave(alici.k_id,satici.k_id,urun.urun,Convert.ToInt32( urun.fiyat), Convert.ToInt32(siparis.adet));
 
                         if (urun.miktar==0)
                         {
@@ -300,6 +301,21 @@ namespace yazilimYapimi.Controllers
             db.SaveChanges();
         }
 
+        void LogRaporSave(int alici,int satici,string urun,int fiyat,int adet)
+        {
+            logSatis logSatis = new logSatis();
+
+            logSatis.Tarih = DateTime.Now;
+            logSatis.Urun = urun;
+            logSatis.Fiyat = fiyat;
+            logSatis.Miktar = adet;
+            logSatis.AliciId = alici;
+            logSatis.SaticiId = satici;
+
+            db.logSatis.Add(logSatis);
+            db.SaveChanges();
+        }
+
         //otomatik satın alma------------------------------------------------------------------------------------------------------
 
         public ActionResult ActionOtoSatinAL(string urun, string adet, string fiyat)
@@ -307,25 +323,29 @@ namespace yazilimYapimi.Controllers
             int miktar = Convert.ToInt32(adet);
             int ucret = Convert.ToInt32(fiyat);
             int kullaniciId = Convert.ToInt32(Session["k_id"]);
-
+            
 
             var alinacakUrun = db.urunler.FirstOrDefault(x => x.miktar >= miktar && x.fiyat <= ucret && x.urun == urun);
-
+            
             var musteri = db.kullanici.FirstOrDefault(x => x.k_id == kullaniciId);
+
             if (alinacakUrun != null)// istenilen miktarda istenilen ücretin altında ürün var ise
             {
                 if (musteri.bakiye >= (miktar * alinacakUrun.fiyat))//müşteride yeterli para var ise
                 {
                     alinacakUrun.miktar -= miktar;//ürün adeti düşürülüyor
-                    if (alinacakUrun.miktar == 0)//ürün bitti ise siliniyor
-                    {
-                        db.urunler.Remove(alinacakUrun);
-                    }
+                  
 
                     musteri.bakiye -= miktar * alinacakUrun.fiyat;//bakiyeden düşülüyor
                     Session["para"] = musteri.bakiye;
                     Session["bildirim"]= "satin alim basarili " + miktar + " adet " + alinacakUrun.urun + alinacakUrun.fiyat + " fiyatindan satin alindi,toplam odenen: " + (alinacakUrun.fiyat * miktar);
                    
+                    LogRaporSave(musteri.k_id, Convert.ToInt32(alinacakUrun.k_id), alinacakUrun.urun, Convert.ToInt32(fiyat), Convert.ToInt32(adet));
+
+                    if (alinacakUrun.miktar == 0)//ürün bitti ise siliniyor
+                    {
+                        db.urunler.Remove(alinacakUrun);
+                    }
                 }
                 else
                 {
@@ -348,7 +368,5 @@ namespace yazilimYapimi.Controllers
             db.SaveChanges();
             return Redirect("OtoSatinAl");
         }
-
-
     }
 }

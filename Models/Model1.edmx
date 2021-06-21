@@ -21,6 +21,18 @@
           <Property Name="yetki" Type="bit" Nullable="false" />
           <Property Name="bakiye" Type="int" />
         </EntityType>
+        <EntityType Name="logSatis">
+          <Key>
+            <PropertyRef Name="SatisId" />
+          </Key>
+          <Property Name="SatisId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tarih" Type="datetime" />
+          <Property Name="Urun" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fiyat" Type="int" />
+          <Property Name="Miktar" Type="int" />
+          <Property Name="AliciId" Type="int" />
+          <Property Name="SaticiId" Type="int" />
+        </EntityType>
         <EntityType Name="obakiye">
           <Key>
             <PropertyRef Name="k_id" />
@@ -82,6 +94,7 @@
         </Association>
         <EntityContainer Name="yazilimyapimiModelStoreContainer">
           <EntitySet Name="kullanici" EntityType="Self.kullanici" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="logSatis" EntityType="Self.logSatis" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="obakiye" EntityType="Self.obakiye" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ourunler" EntityType="Self.ourunler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -174,6 +187,7 @@
             <End Role="urunler" EntitySet="urunler" />
           </AssociationSet>
           <EntitySet Name="urunSiparis" EntityType="yazilimyapimiModel.urunSiparis" />
+          <EntitySet Name="logSatis" EntityType="yazilimyapimiModel.logSatis" />
         </EntityContainer>
         <EntityType Name="urunSiparis">
           <Key>
@@ -184,6 +198,18 @@
           <Property Name="urun" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="fiyat" Type="Int32" />
           <Property Name="adet" Type="Int32" />
+        </EntityType>
+        <EntityType Name="logSatis">
+          <Key>
+            <PropertyRef Name="SatisId" />
+          </Key>
+          <Property Name="SatisId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <Property Name="Urun" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fiyat" Type="Int32" />
+          <Property Name="Miktar" Type="Int32" />
+          <Property Name="AliciId" Type="Int32" />
+          <Property Name="SaticiId" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -257,6 +283,19 @@
                 <ScalarProperty Name="urun" ColumnName="urun" />
                 <ScalarProperty Name="k_id" ColumnName="k_id" />
                 <ScalarProperty Name="siparis_id" ColumnName="siparis_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logSatis">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.logSatis">
+              <MappingFragment StoreEntitySet="logSatis">
+                <ScalarProperty Name="SaticiId" ColumnName="SaticiId" />
+                <ScalarProperty Name="AliciId" ColumnName="AliciId" />
+                <ScalarProperty Name="Miktar" ColumnName="Miktar" />
+                <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
+                <ScalarProperty Name="Urun" ColumnName="Urun" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="SatisId" ColumnName="SatisId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

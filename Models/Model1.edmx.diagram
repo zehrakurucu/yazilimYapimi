@@ -12,6 +12,7 @@
         <EntityTypeShape EntityType="yazilimyapimiModel.urunler" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
         <AssociationConnector Association="yazilimyapimiModel.FK_urunler_kullanici" ManuallyRouted="false" />
         <EntityTypeShape EntityType="yazilimyapimiModel.urunSiparis" Width="1.5" PointX="8.25" PointY="4.5" />
+        <EntityTypeShape EntityType="yazilimyapimiModel.logSatis" Width="1.5" PointX="0.75" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
