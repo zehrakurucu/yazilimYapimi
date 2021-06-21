@@ -10,5 +10,7 @@ namespace yazilimYapimi.classes
         public int kid { get; set; }
         public string kullanici { get; set; }
         public int para { get; set; }
+        public string cins { get; set; }
+        public double kur { get; set; }
     }
 }

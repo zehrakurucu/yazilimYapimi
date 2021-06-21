@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 using yazilimYapimi.classes;
 using yazilimYapimi.Models;
 
@@ -39,13 +40,10 @@ namespace yazilimYapimi.Controllers
             onayListele();
             ViewBag.Message = "Otomatik Satın alma sayfası.";
 
-
-
             List<urunSiparis> urunSiparisleri = new List<urunSiparis>();
             int k_id =Convert.ToInt32( Session["k_id"]);
             urunSiparisleri = db.urunSiparis.Where(x => x.k_id == k_id).ToList();
             ViewBag.urunSiparisleri = urunSiparisleri;
-
 
             return View();
         }
@@ -107,6 +105,35 @@ namespace yazilimYapimi.Controllers
                 bakiyesahibi.kid = item.k_id;
                 bakiyesahibi.para = Convert.ToInt32(item.bakiye);
                 bakiyesahibi.kullanici = db.kullanici.FirstOrDefault(x => x.k_id == item.k_id).kad;
+
+                if (item.cins!="TL")
+                {
+                    bakiyesahibi.kur = Convert.ToDouble(DovizKur(item.cins));
+                }
+                else
+                {
+                    bakiyesahibi.kur = 1;
+                }
+
+                if (item.cins=="TL")
+                {
+                    bakiyesahibi.cins = "TL";
+                    
+                }
+                else if (item.cins == "USD")
+                {
+                    bakiyesahibi.cins = "Dolar";
+                    
+                }
+                else if (item.cins == "EUR")
+                {
+                    bakiyesahibi.cins = "Euro";
+                }
+                else //GBP
+                {
+                    bakiyesahibi.cins = "Sterlin";
+                }
+                //bakiyesahibi.cins = item.cins;
                 bakiyesahibis.Add(bakiyesahibi);
             }
             ViewBag.bakiye = bakiyesahibis;
@@ -157,7 +184,6 @@ namespace yazilimYapimi.Controllers
                 }
                 ViewBag.Sattiklarim = logSatisInfos;
             }
-
             return View("SatisRapor");
         }
 
@@ -223,8 +249,12 @@ namespace yazilimYapimi.Controllers
         //bakiye ekle- bakiye admin onay------------------------------------------------------------------------------------------------------
 
         [HttpPost]
-        public ActionResult bakiyeEkle(string bakiye)
+        public ActionResult bakiyeEkle(string bakiye,string cins)
         {
+
+           // double kur=Convert.ToDouble(DovizKur(Cins));
+            
+            /*
             foreach (var item in obakiyes)
             {
                 bakiyesahibi bakiyesahibi = new bakiyesahibi();
@@ -233,25 +263,28 @@ namespace yazilimYapimi.Controllers
                 bakiyesahibi.kullanici = db.kullanici.FirstOrDefault(x => x.k_id == item.k_id).kad;
                 bakiyesahibis.Add(bakiyesahibi);
             }
-            ViewBag.bakiye = bakiyesahibis;
+            ViewBag.bakiye = bakiyesahibis;*/
 
             obakiye obakiye = new obakiye()
             {
                 bakiye = Convert.ToInt32(bakiye),
-                k_id = Convert.ToInt32(Session["k_id"])
+                k_id = Convert.ToInt32(Session["k_id"]),
+                cins = cins
             };
             db.obakiye.Add(obakiye);
             db.SaveChanges();
             return RedirectToAction("Urunler");
         }
-        public ActionResult BakiyeOnay(string id, string onay, string bakiye = "0")
+        public ActionResult BakiyeOnay(string id, string onay,string cins, string bakiye="0")
         {
+
             int kid = Convert.ToInt32(id);
 
             if (onay == "1")
             {
+
                 var user = db.kullanici.FirstOrDefault(x => x.k_id == kid);
-                user.bakiye += Convert.ToInt32(bakiye);
+                user.bakiye +=Convert.ToInt32( Convert.ToInt32(bakiye)*Convert.ToDouble(  DovizKur(cins)));
                 var b = db.obakiye.FirstOrDefault(x => x.k_id == kid);
                 db.obakiye.Remove(b);
                 db.SaveChanges();
@@ -264,6 +297,20 @@ namespace yazilimYapimi.Controllers
             }
 
             return Redirect("Urunler");
+        }
+        decimal DovizKur(string Cins)
+        {
+            
+
+            XDocument xDocument = XDocument.Load("http://www.tcmb.gov.tr/kurlar/today.xml"); // verileri çekmek 
+            
+            var s = xDocument.Element("Tarih_Date").Elements("Currency").FirstOrDefault(a => a.Attribute("Kod").Value == Cins);
+            var bElement = s.Element("ForexBuying");
+
+            decimal fiyat = Convert.ToDecimal(bElement.Value.Replace('.', ','));   // noktayı virgül yapmak için 
+            
+
+            return fiyat;
         }
 
         //urun ekle -urun onay------------------------------------------------------------------------------------------------------

@@ -39,6 +39,7 @@
           </Key>
           <Property Name="k_id" Type="int" Nullable="false" />
           <Property Name="bakiye" Type="int" />
+          <Property Name="cins" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ourunler">
           <Key>
@@ -126,13 +127,6 @@
           <Property Name="bakiye" Type="Int32" />
           <NavigationProperty Name="urunler" Relationship="Self.FK_urunler_kullanici" FromRole="kullanici" ToRole="urunler" />
         </EntityType>
-        <EntityType Name="obakiye">
-          <Key>
-            <PropertyRef Name="k_id" />
-          </Key>
-          <Property Name="k_id" Type="Int32" Nullable="false" />
-          <Property Name="bakiye" Type="Int32" />
-        </EntityType>
         <EntityType Name="ourunler">
           <Key>
             <PropertyRef Name="urun_id" />
@@ -178,7 +172,6 @@
         </Association>
         <EntityContainer Name="yazilimyapimiEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="kullanici" EntityType="Self.kullanici" />
-          <EntitySet Name="obakiye" EntityType="Self.obakiye" />
           <EntitySet Name="ourunler" EntityType="Self.ourunler" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="urunler" EntityType="Self.urunler" />
@@ -188,6 +181,7 @@
           </AssociationSet>
           <EntitySet Name="urunSiparis" EntityType="yazilimyapimiModel.urunSiparis" />
           <EntitySet Name="logSatis" EntityType="yazilimyapimiModel.logSatis" />
+          <EntitySet Name="obakiye" EntityType="yazilimyapimiModel.obakiye" />
         </EntityContainer>
         <EntityType Name="urunSiparis">
           <Key>
@@ -211,6 +205,14 @@
           <Property Name="AliciId" Type="Int32" />
           <Property Name="SaticiId" Type="Int32" />
         </EntityType>
+        <EntityType Name="obakiye">
+          <Key>
+            <PropertyRef Name="k_id" />
+          </Key>
+          <Property Name="k_id" Type="Int32" Nullable="false" />
+          <Property Name="bakiye" Type="Int32" />
+          <Property Name="cins" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -230,14 +232,6 @@
                 <ScalarProperty Name="mail" ColumnName="mail" />
                 <ScalarProperty Name="adres" ColumnName="adres" />
                 <ScalarProperty Name="yetki" ColumnName="yetki" />
-                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="obakiye">
-            <EntityTypeMapping TypeName="yazilimyapimiModel.obakiye">
-              <MappingFragment StoreEntitySet="obakiye">
-                <ScalarProperty Name="k_id" ColumnName="k_id" />
                 <ScalarProperty Name="bakiye" ColumnName="bakiye" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -296,6 +290,15 @@
                 <ScalarProperty Name="Urun" ColumnName="Urun" />
                 <ScalarProperty Name="Tarih" ColumnName="Tarih" />
                 <ScalarProperty Name="SatisId" ColumnName="SatisId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="obakiye">
+            <EntityTypeMapping TypeName="yazilimyapimiModel.obakiye">
+              <MappingFragment StoreEntitySet="obakiye">
+                <ScalarProperty Name="cins" ColumnName="cins" />
+                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+                <ScalarProperty Name="k_id" ColumnName="k_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

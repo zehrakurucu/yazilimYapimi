@@ -76,10 +76,32 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">
                                         <div class="text-left user-item" style="display: inline-block; margin-left: 10px;width: 100px;float: left">
-                                            @item.kullanici hesabına @item.para tl ekledi
+                                            @{ 
+
+                                                int bakiye= Convert.ToInt32(Convert.ToInt32(item.para) * Convert.ToDouble(item.kur));
+                                                string birim;
+                                                if (item.cins == "TL")
+                                                {
+                                                    birim = "TL";
+                                                }
+                                                else if (item.cins == "Dolar")
+                                                {
+                                                    birim = "USD";
+
+                                                }
+                                                else if (item.cins == "Euro")
+                                                {
+                                                    birim = "EUR";
+                                                }
+                                                else //Sterlin
+                                                {
+                                                    birim= "GBP";
+                                                }
+                                            }
+                                            @item.kullanici hesabına @item.para @item.cins ekledi (kur: @item.kur , total:@bakiye)
                                         </div>
                                         <div style="display: inline-block;">
-                                            <a class="btn btn-primary btn-sm justify-content-end" href="/Home/BakiyeOnay?id=@item.kid&onay=1&bakiye=@item.para">✓</a>
+                                            <a class="btn btn-primary btn-sm justify-content-end" href="/Home/BakiyeOnay?id=@item.kid&onay=1&bakiye=@item.para&cins=@birim">✓</a>
                                             <a class="btn btn-primary btn-sm justify-content-end" href="/Home/BakiyeOnay?id=@item.kid&onay=0">X</a>
                                         </div>
                                     </a>

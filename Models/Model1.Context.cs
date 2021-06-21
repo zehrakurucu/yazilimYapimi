@@ -26,11 +26,11 @@ namespace yazilimYapimi.Models
         }
     
         public virtual DbSet<kullanici> kullanici { get; set; }
-        public virtual DbSet<obakiye> obakiye { get; set; }
         public virtual DbSet<ourunler> ourunler { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<urunler> urunler { get; set; }
         public virtual DbSet<urunSiparis> urunSiparis { get; set; }
         public virtual DbSet<logSatis> logSatis { get; set; }
+        public virtual DbSet<obakiye> obakiye { get; set; }
     }
 }
