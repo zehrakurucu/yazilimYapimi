@@ -14,6 +14,7 @@ namespace yazilimYapimi.Models
     
     public partial class obakiye
     {
+        public int obakiyeid { get; set; }
         public int k_id { get; set; }
         public Nullable<int> bakiye { get; set; }
         public string cins { get; set; }

@@ -75,6 +75,7 @@
                             <th>Ürün</th>
                             <th>Adet Fiyat</th>
                             <th>miktar</th>
+                            <th>Komisyon %1</th>
                             <th>Tutar</th>
                             <th>Alıcı</th>
                             <th>Satıcı</th>
@@ -89,7 +90,8 @@
                                 <th>@item.Urun</th>
                                 <th>@item.Fiyat</th>
                                 <th>@item.Miktar</th>
-                                <th>@(item.Fiyat * item.Miktar)</th>
+                                <th>@(item.Fiyat*item.Miktar*0.01)</th>
+                                <th>@((item.Fiyat * item.Miktar)+((item.Fiyat * item.Miktar)*0.01))</th>
                                 <th>@item.Alici</th>
                                 <th>@item.Satici</th>
                             </tr>
@@ -113,6 +115,7 @@
                             <th>Ürün</th>
                             <th>Adet Fiyat</th>
                             <th>miktar</th>
+                            <th>Komisyon %1</th>
                             <th>Tutar</th>
                             <th>Alıcı</th>
                             <th>Satıcı</th>
@@ -122,15 +125,16 @@
 
                         @foreach (var item in ViewBag.Aldiklarim)
                         {
-                            <tr>
-                                <th>@item.Tarih</th>
-                                <th>@item.Urun</th>
-                                <th>@item.Fiyat</th>
-                                <th>@item.Miktar</th>
-                                <th>@(item.Fiyat * item.Miktar)</th>
-                                <th>@item.Alici</th>
-                                <th>@item.Satici</th>
-                            </tr>
+                        <tr>
+                            <th>@item.Tarih</th>
+                            <th>@item.Urun</th>
+                            <th>@item.Fiyat</th>
+                            <th>@item.Miktar</th>
+                            <th>@(item.Fiyat*item.Miktar*0.01)</th>
+                            <th>@((item.Fiyat * item.Miktar)+((item.Fiyat * item.Miktar)*0.01))</th>
+                            <th>@item.Alici</th>
+                            <th>@item.Satici</th>
+                        </tr>
                         }
                 </table>
             </div>

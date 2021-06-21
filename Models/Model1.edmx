@@ -35,8 +35,9 @@
         </EntityType>
         <EntityType Name="obakiye">
           <Key>
-            <PropertyRef Name="k_id" />
+            <PropertyRef Name="obakiyeid" />
           </Key>
+          <Property Name="obakiyeid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="k_id" Type="int" Nullable="false" />
           <Property Name="bakiye" Type="int" />
           <Property Name="cins" Type="nvarchar" MaxLength="50" />
@@ -207,8 +208,9 @@
         </EntityType>
         <EntityType Name="obakiye">
           <Key>
-            <PropertyRef Name="k_id" />
+            <PropertyRef Name="obakiyeid" />
           </Key>
+          <Property Name="obakiyeid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="k_id" Type="Int32" Nullable="false" />
           <Property Name="bakiye" Type="Int32" />
           <Property Name="cins" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -299,6 +301,7 @@
                 <ScalarProperty Name="cins" ColumnName="cins" />
                 <ScalarProperty Name="bakiye" ColumnName="bakiye" />
                 <ScalarProperty Name="k_id" ColumnName="k_id" />
+                <ScalarProperty Name="obakiyeid" ColumnName="obakiyeid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

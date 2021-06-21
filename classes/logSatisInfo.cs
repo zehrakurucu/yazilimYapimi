@@ -16,7 +16,7 @@ namespace yazilimYapimi.classes
         public string Satici { get; set; }
 
         yazilimyapimiEntities db = new yazilimyapimiEntities();
-        public List<logSatisInfo> satisList(int kullaniciId)
+        public List<logSatisInfo> satisList(int kullaniciId)//kullanıcı idye göre satış listesi döndürülüyor
         {
             List<logSatisInfo> satisInfos = new List<logSatisInfo>();
             List<logSatis> satislar = new List<logSatis>();
@@ -37,7 +37,7 @@ namespace yazilimYapimi.classes
             return satisInfos;
         }
 
-        public List<logSatisInfo> alisList(int kullaniciId)
+        public List<logSatisInfo> alisList(int kullaniciId)//kullanıcı idye göre alış listesi döndürülüyor
         {
             List<logSatisInfo> alisInfos = new List<logSatisInfo>();
             List<logSatis> alislar = new List<logSatis>();
