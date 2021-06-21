@@ -111,6 +111,55 @@ namespace yazilimYapimi.Controllers
             }
             ViewBag.bakiye = bakiyesahibis;
         }
+        public ActionResult SatisRapor()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult SatisRaporFiltre(DateTime ilkTarih,DateTime ikinciTarih,string aldiklarim,string sattiklarim)
+        {
+            int kullaniciId = Convert.ToInt32(Session["k_id"]);
+            logSatisInfo logSatisInfo = new logSatisInfo();
+
+            if (aldiklarim!=null)
+            {
+                List<logSatisInfo> logSatisInfos = new List<logSatisInfo>();
+                logSatisInfos = logSatisInfo.alisList(kullaniciId);
+
+                for (int i = logSatisInfos.Count - 1; i >= 0; i--)
+                {
+                    int t1 = DateTime.Compare(logSatisInfos[i].Tarih, ilkTarih);
+                    int t2 = DateTime.Compare(logSatisInfos[i].Tarih, ikinciTarih.AddDays(1));
+                    if (t1 < 0 || t2 > 0)
+                    {
+                        logSatisInfos.RemoveAt(i);
+                    }
+                }
+
+                ViewBag.Aldiklarim = logSatisInfos;
+
+            }
+            if (sattiklarim != null)
+            {
+                List<logSatisInfo> logSatisInfos = new List<logSatisInfo>();
+                logSatisInfos = logSatisInfo.satisList(kullaniciId);
+
+                for (int i = logSatisInfos.Count-1; i >=0; i--)
+                {
+                    int t1 = DateTime.Compare(logSatisInfos[i].Tarih, ilkTarih);
+                    int t2 = DateTime.Compare(logSatisInfos[i].Tarih, ikinciTarih.AddDays(1));
+                    if (t1 < 0 || t2 > 0)
+                    {
+                        logSatisInfos.RemoveAt(i);
+                    }
+                }
+                ViewBag.Sattiklarim = logSatisInfos;
+            }
+
+            return View("SatisRapor");
+        }
 
 
         //Kayıt işlemi------------------------------------------------------------------------------------------------------
@@ -155,8 +204,6 @@ namespace yazilimYapimi.Controllers
                 Session["yetki"] = kullanici.yetki;
                 Session["k_id"] = kullanici.k_id;
                 Session["para"] = kullanici.bakiye;
-
-
 
                 return RedirectToAction("Urunler");
             }
