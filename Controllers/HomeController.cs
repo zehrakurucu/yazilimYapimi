@@ -300,16 +300,12 @@ namespace yazilimYapimi.Controllers
         }
         decimal DovizKur(string Cins)
         {
-            
-
             XDocument xDocument = XDocument.Load("http://www.tcmb.gov.tr/kurlar/today.xml"); // verileri çekmek 
             
             var s = xDocument.Element("Tarih_Date").Elements("Currency").FirstOrDefault(a => a.Attribute("Kod").Value == Cins);
             var bElement = s.Element("ForexBuying");
-
             decimal fiyat = Convert.ToDecimal(bElement.Value.Replace('.', ','));   // noktayı virgül yapmak için 
             
-
             return fiyat;
         }
 
@@ -379,7 +375,10 @@ namespace yazilimYapimi.Controllers
                         satici.bakiye += urun.fiyat * siparis.adet;
 
                         var alici=db.kullanici.FirstOrDefault(x => x.k_id == siparis.k_id);
-                        alici.bakiye-= urun.fiyat * siparis.adet;
+                        alici.bakiye -=Convert.ToInt32( (urun.fiyat * siparis.adet) + ((urun.fiyat * siparis.adet) * 0.01));
+
+                        var muhasebe = db.kullanici.FirstOrDefault(x => x.k_id == 9);
+                        muhasebe.bakiye+=Convert.ToInt32(urun.fiyat * siparis.adet * 0.01);
 
                         LogRaporSave(alici.k_id,satici.k_id,urun.urun,Convert.ToInt32( urun.fiyat), Convert.ToInt32(siparis.adet));
 
@@ -429,8 +428,11 @@ namespace yazilimYapimi.Controllers
                 {
                     alinacakUrun.miktar -= miktar;//ürün adeti düşürülüyor
                   
+                    musteri.bakiye -= Convert.ToInt32((alinacakUrun.fiyat * miktar) + ((alinacakUrun.fiyat * miktar) * 0.01));//bakiyeden düşülüyor
 
-                    musteri.bakiye -= miktar * alinacakUrun.fiyat;//bakiyeden düşülüyor
+                    var muhasebe = db.kullanici.FirstOrDefault(x => x.k_id == 9);
+                    muhasebe.bakiye += Convert.ToInt32(alinacakUrun.fiyat * miktar * 0.01);
+
                     Session["para"] = musteri.bakiye;
                     Session["bildirim"]= "satin alim basarili " + miktar + " adet " + alinacakUrun.urun + alinacakUrun.fiyat + " fiyatindan satin alindi,toplam odenen: " + (alinacakUrun.fiyat * miktar);
                    
